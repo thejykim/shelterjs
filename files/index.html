@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+	<head>
+		<!-- Bootstrap CSS. -->
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+		<style>
+			#dwellers
+			{
+			  display:flex;
+			  flex-wrap: wrap;
+			  margin: 2;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="jumbotron">
+			  <h1 class="display-4">yuh</h1>
+			  <p class="lead" id="lol">something here too but idc</p>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+				<div class="col-4">
+					<div class="card">
+						<div class="card-body">
+							<h5 class="card-title">
+								Stats
+							</h5>
+							<div class="card-text" id="stats">
+								<p id="numDwellers"></p>
+								<p id="panel">
+									<button type="button" onclick='start()'>Start</button>
+								</p>
+								<p id="level"></p>
+								<h6>EXP to next level</h6>
+								<div class="progress" id="exp-bar"></div></br>
+								<h6>Resources</h6>
+								<div class="progress" id="resource-bar"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-8">
+					<div class="card">
+						<div class="card-body">
+							<h5 class="card-title">
+								My Dwellers
+							</h5>
+							<div class="card-text" id="upgrade-info"></div>
+							<div class="card-text" id="dwellers"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Game files. -->
+		<script src="game.js"></script>
+	</body>
+</html>
