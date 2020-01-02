@@ -192,17 +192,30 @@ function newDweller(name, strength, iq, charisma) {
 	let dweller = new Dweller(name, strength, iq, charisma)
 	dwellers.push(dweller)
 	updateDwellerCount()
+	addDwellerCard()
 	return dweller
 }
 
 function randomName() {
 	let number = Math.random()
-	if (number < 0.25) {
-		return "Joe"
-	} else if (number < 0.5) {
-		return "Bob"
-	} else if (number < 0.75) {
+	if (number < 0.1) {
+		return "Craig"
+	} else if (number < 0.2) {
+		return "Roger"
+	} else if (number < 0.3) {
 		return "Butler"
+	} else if (number < 0.4) {
+		return "Cheryl"
+	} else if (number < 0.5) {
+		return "George"
+	} else if (number < 0.6) {
+		return "Carol"
+	} else if (number < 0.7) {
+		return "Willie"
+	} else if (number < 0.8) {
+		return "Kathryn"
+	} else if (number < 0.9) {
+		return "Steve"
 	} else {
 		return "Amigo"
 	}
@@ -419,7 +432,99 @@ function refreshDwellerPanel() {
 }
 
 function addDwellerCard() {
+		let i = dwellers.length-1
 
+		// Necessary row and column
+		let dwellerRow = document.createElement('div')
+		dwellerRow.setAttribute('class', 'row')
+		dwellerRow.setAttribute('style', 'margin: 2px')
+		dwellerRow.setAttribute('id', `row-${dwellers[i].getID()}`)
+
+		let dwellerCol = document.createElement('div')
+		dwellerCol.setAttribute('class', 'col')
+
+		// Card and card body
+		let dwellerCard = document.createElement('div')
+		dwellerCard.setAttribute('class', 'card')
+
+		let dwellerBody = document.createElement('div')
+		dwellerBody.setAttribute('class', 'card-body')
+
+		// Dweller name and level
+		let dwellerName = document.createElement('h6')
+		dwellerName.setAttribute('class', 'card-title')
+		dwellerName.innerText = `${dwellers[i].getName()} `
+
+		let dwellerLevel = document.createElement('small')
+		dwellerLevel.setAttribute('class', 'text-muted')
+		dwellerLevel.setAttribute('id', `level-${dwellers[i].getID()}`)
+		dwellerLevel.textContent = `Level ${dwellers[i].getLevel()}`
+
+		// Dweller stats
+		let dwellerStats = document.createElement('div')
+		dwellerStats.setAttribute('class', 'card-text')
+
+		let dwellerStrength = document.createElement('p')
+		dwellerStrength.setAttribute('id', `strength-${dwellers[i].getID()}`)
+		dwellerStrength.innerHTML = "Strength = " + dwellers[i].getStrength()
+
+		let dwellerIQ = document.createElement('p')
+		dwellerIQ.setAttribute('id', `iq-${dwellers[i].getID()}`)
+		dwellerIQ.innerHTML = "IQ = " + dwellers[i].getIQ()
+
+		let dwellerCharisma = document.createElement('p')
+		dwellerCharisma.setAttribute('id', `charisma-${dwellers[i].getID()}`)
+		dwellerCharisma.innerHTML = "Charisma = " + dwellers[i].getCharisma()
+
+		// Dweller state
+		let dwellerState = document.createElement('div')
+		dwellerState.setAttribute('class', 'card-text')
+		dwellerState.setAttribute('id', `dweller-${dwellers[i].getID()}`)
+		if (dwellers[i].getStatus() == State.REST) {
+			dwellerState.innerText = "Currently resting"
+		} else if (dwellers[i].getStatus() == State.WORK) {
+			dwellerState.innerText = "Currently working"
+		} else if (dwellers[i].getStatus() == State.EXPLORE) {
+			dwellerState.innerText = "Currently exploring"
+		}
+
+		// Dweller stamina
+		let dwellerStaminaBar = document.createElement('div')
+		dwellerStaminaBar.setAttribute('class', 'progress')
+		let dwellerStamina = dwellers[i].getStamina()
+		dwellerStaminaBar.innerHTML = `<div class="progress-bar" role="progressbar" id="stamina-${dwellers[i].getID()}" style="width: ${dwellers[i].getStamina()}%" aria-valuenow="${dwellers[i].getStamina()}" aria-valuemin="0" aria-valuemax="100">${dwellers[i].getStamina()}</div>`
+
+		// Toggle dweller states
+		let dwellerToggles = document.createElement('div')
+		dwellerToggles.setAttribute('class', 'btn-group btn-group-toggle')
+		dwellerToggles.setAttribute('data-toggle', 'buttons')
+		dwellerToggles.setAttribute('id', `toggle-${dwellers[i].getID()}`)
+		dwellerToggles.innerHTML = `
+		<label class="btn btn-secondary">
+			<input type="radio" name="options" onclick="updateDwellerState(${dwellers[i].getID()}, State.REST)"> Rest
+		</label>
+		<label class="btn btn-secondary active">
+			<input type="radio" name="options" onclick="updateDwellerState(${dwellers[i].getID()}, State.WORK)" checked> Work
+		</label>
+		<label class="btn btn-secondary">
+			<input type="radio" name="options" onclick="updateDwellerState(${dwellers[i].getID()}, State.EXPLORE)"> Explore
+		</label>`
+
+		dwellerStats.appendChild(dwellerStrength)
+		dwellerStats.appendChild(dwellerIQ)
+		dwellerStats.appendChild(dwellerCharisma)
+
+		dwellerName.appendChild(dwellerLevel)
+		dwellerBody.appendChild(dwellerName)
+		dwellerBody.appendChild(dwellerStats)
+		dwellerBody.appendChild(dwellerStaminaBar)
+		dwellerBody.appendChild(dwellerState)
+		dwellerBody.appendChild(dwellerToggles)
+		dwellerCard.appendChild(dwellerBody)
+		dwellerCol.appendChild(dwellerCard)
+		dwellerRow.appendChild(dwellerCol)
+
+		dwellersPanel.appendChild(dwellerRow)
 }
 
 async function updateLevel() {
@@ -439,6 +544,10 @@ async function updateLevel() {
 		upgradeInfoPanel.innerHTML = `
 		<p class="lead" style="color: green; font-size: 18px">${level-upgradesUsed} upgrade(s) available!</p>
 		`
+	}
+
+	if (level%5 == 0) {
+		newDweller(randomName(), 2, 1, 2)
 	}
 }
 
